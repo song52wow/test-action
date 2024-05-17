@@ -1,0 +1,20 @@
+name: Build and Release
+
+on:
+  push:
+    branches: 
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    permissions: write-all
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Get branch name
+        run: echo "The branch name is ${github.ref_name}"
+      - uses: actions/checkout@v2
+  

@@ -2,10 +2,11 @@ name: Build and Release
 
 on:
   push:
-    branches: 
-      - main
-    # tags:
-    #   - 'v*'
+
+    # branches: 
+    #   - main
+    tags:
+      - 'v*'
   pull_request:
 
 jobs:
@@ -34,6 +35,14 @@ jobs:
 
     - name: Build Zip
       run: zip -r dist.zip ./dist
+
+    - name: Get tag info
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        curl -H "Authorization: token $GITHUB_TOKEN" \
+             -X GET \
+             https://api.github.com/repos/${{ github.repository }}/git/refs/tags
       
     - name: Create Release
       id: create_release

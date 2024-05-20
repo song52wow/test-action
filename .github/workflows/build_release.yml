@@ -54,8 +54,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.get_latest_tag.outputs.LATEST_TAG }}
-        release_name: ${{ steps.get_latest_tag.outputs.LATEST_TAG }}
+        tag_name: test
+        release_name: test
         draft: true
         prerelease: true
         

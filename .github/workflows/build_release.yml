@@ -16,41 +16,35 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+  
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16
+        
+    - name: Install pnpm
+      run: npm install -g pnpm@8
+        
+    - name: Install Dependencies
+      run: pnpm install
+        
+    - name: Build
+      run: pnpm build
 
-    - name: Get Latest Tag
-      id: get_latest_tag
+    - name: Build Zip
+      run: zip -r dist.zip ./dist
+
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: ${{github.ref_type}}
-    
-    # - name: Setup Node.js
-    #   uses: actions/setup-node@v2
-    #   with:
-    #     node-version: 16
-        
-    # - name: Install pnpm
-    #   run: npm install -g pnpm@8
-        
-    # - name: Install Dependencies
-    #   run: pnpm install
-        
-    # - name: Build
-    #   run: pnpm build
-
-    # - name: Build Zip
-    #   run: zip -r dist.zip ./dist
-
-
-    # - name: Create Release
-    #   id: create_release
-    #   uses: actions/create-release@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     tag_name: ${{ github.ref_type }}
-    #     release_name: test
-    #     draft: true
-    #     prerelease: true
+      with:
+        tag_name: ${{ github.event.head_commit.message }}
+        release_name: ${{github.event.head_commit.message}}
+        draft: true
+        prerelease: true
         
     # - name: Upload Release Asset
     #   uses: actions/upload-release-asset@v1
